@@ -1,0 +1,6 @@
+table,filename
+customer,customer*.parquet
+product,product*.parquet
+salesOrderHeader,salesOrderHeader*.parquet
+salesOrderDetail,salesOrderDetail*.parquet
+address,address*.parquet
