@@ -90,3 +90,40 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false         
+
+  sql-scripts:
+    name: 'Run SQL Scripts'
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Run SQL scripts
+      env:
+        SQL_SERVER: ${{ secrets.Azure_SQL_SERVER_instance }}
+        SQL_DATABASE: 'testdb1' # test only 
+        SQL_USERNAME: ${{ secrets.SQL_USERNAME }} 
+        SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      run: |
+        for script in ./azTerraform/scripts/*.sql
+        do
+          echo "Running script: $script"
+          echo "${script:0:15}"
+          echo "Debug: will be removed , TODO"
+          echo "instance: $Azure_SQL_SERVER_instance" 
+          echo "username: $SQL_USERNAME"
+          sqlcmd -S $Azure_SQL_SERVER_instance -d testdb1 -U $SQL_USERNAME -P $SQL_PASSWORD -i "$script"
+        done
+
+    - name: Logout from Azure
+      run: |
+        az logout
+        az cache purge
+        az account clear
