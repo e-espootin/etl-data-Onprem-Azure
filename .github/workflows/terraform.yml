@@ -113,8 +113,8 @@ jobs:
         SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
       run: |
         for script in ./azTerraform/scripts/*.sql
-        do
-          echo "Running script: $script"
+        do           
+          echo "Running script: ${script}"
           echo "${script:0:15}"
           echo "Debug: will be removed , TODO"
           echo "instance: $Azure_SQL_SERVER_instance" 
