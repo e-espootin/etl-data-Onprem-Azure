@@ -8,7 +8,7 @@ resource "azurerm_data_factory" "main" {
 }
 
 resource "azurerm_data_factory_pipeline" "test" {
-  name            = "example_etl_pipeline"
+  name            = "loadIntoSQL"
   data_factory_id = azurerm_data_factory.main.id
   variables = {
     "bob" = "item1"
