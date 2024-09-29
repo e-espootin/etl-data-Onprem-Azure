@@ -88,9 +88,16 @@ jobs:
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
-      #  if : github.ref == 'refs/heads/"main"' && github.event_name == 'push'       
+      if : github.ref == 'refs/heads/"main"' && github.event_name == 'push'       
       run: terraform apply -auto-approve -input=false  
       
+    - name: Terraform Destroy on Failure
+      if : github.ref == 'refs/heads/"main"' && github.event_name == 'push' && failure()
+      run: |
+        echo "Terraform apply failed. Initiating destroy..."
+        terraform destroy -auto-approve -input=false
+      continue-on-error: true
+
 
   sql-scripts:
     name: 'Run SQL Scripts'
@@ -120,7 +127,7 @@ jobs:
           echo "Debug: will be removed , TODO"
           echo "instance: ${{ secrets.Azure_SQL_SERVER_instance }}" 
           echo "username: ${{ secrets.SQL_USERNAME }}"
-          sqlcmd -S ${{ secrets.Azure_SQL_SERVER_instance }} -d testdb1 -U ${{ secrets.SQL_USERNAME }} -P ${{ secrets.SQL_PASSWORD }} -Q "select * from sys.tables"
+          sqlcmd -S ${{ secrets.Azure_SQL_SERVER_instance }} -d testdb1 -U ${{ secrets.SQL_USERNAME }} -P ${{ secrets.SQL_PASSWORD }} -C -Q "select * from sys.tables"
           # sqlcmd -S ${{ secrets.Azure_SQL_SERVER_instance }} -d testdb1 -U ${{ secrets.SQL_USERNAME }} -P ${{ secrets.SQL_PASSWORD }} -i "$script"
         done
 
