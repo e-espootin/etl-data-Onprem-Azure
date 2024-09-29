@@ -65,122 +65,16 @@ resource "azurerm_data_factory_pipeline" "test" {
   }
  activities_json = <<JSON
 [
-        {
-    "name": "loadIntoSQL",
-    "properties": {
-        "activities": [
-            {
-                "name": "Lookup_tablesList",
-                "type": "Lookup",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [
-                    {
-                        "name": "configfilename",
-                        "value": "lookup-config.csv"
-                    }
-                ],
-                "typeProperties": {
-                    "source": {
-                        "type": "BlobSource",
-                        "recursive": true
-                    },
-                    "dataset": {
-                        "referenceName": "dataset_dev_cindia_stg_lookup_file",
-                        "type": "DatasetReference",
-                        "parameters": {
-                            "configfilename": "lookup-config.csv"
-                        }
-                    },
-                    "firstRowOnly": false
-                }
-            },
-            {
-                "name": "ForEach_tables",
-                "type": "ForEach",
-                "dependsOn": [
-                    {
-                        "activity": "Lookup_tablesList",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "userProperties": [],
-                "typeProperties": {
-                    "items": {
-                        "value": "@activity('Lookup_tablesList').output.value",
-                        "type": "Expression"
-                    },
-                    "activities": [
-                        {
-                            "name": "Copy-parquet-into-mssql-tables",
-                            "type": "Copy",
-                            "dependsOn": [],
-                            "policy": {
-                                "timeout": "0.12:00:00",
-                                "retry": 0,
-                                "retryIntervalInSeconds": 30,
-                                "secureOutput": false,
-                                "secureInput": false
-                            },
-                            "userProperties": [],
-                            "typeProperties": {
-                                "source": {
-                                    "type": "ParquetSource",
-                                    "storeSettings": {
-                                        "type": "AzureBlobStorageReadSettings",
-                                        "recursive": true,
-                                        "wildcardFolderPath": "uploaded-files",
-                                        "wildcardFileName": {
-                                            "value": "@concat(item().table, '*.parquet')",
-                                            "type": "Expression"
-                                        },
-                                        "enablePartitionDiscovery": false
-                                    },
-                                    "formatSettings": {
-                                        "type": "ParquetReadSettings"
-                                    }
-                                },
-                                "sink": {
-                                    "type": "SqlServerSink",
-                                    "writeBehavior": "insert",
-                                    "sqlWriterUseTableLock": true
-                                },
-                                "enableStaging": false
-                            },
-                            "inputs": [
-                                {
-                                    "referenceName": "dataset_azure_blob_storage_dev_india_stg",
-                                    "type": "DatasetReference"
-                                }
-                            ],
-                            "outputs": [
-                                {
-                                    "referenceName": "dataset_sql_dev_cindia_stg",
-                                    "type": "DatasetReference",
-                                    "parameters": {
-                                        "tablename": {
-                                            "value": "@concat('salesLT.', item().table)",
-                                            "type": "Expression"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
-        ],
-        "annotations": []
+         {
+        "name": "Append variable1",
+        "type": "AppendVariable",
+        "dependsOn": [],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "bob",
+          "value": "something"
+        }
     }
-}
 ]
   JSON
 }
