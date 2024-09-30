@@ -2,13 +2,13 @@
 ################################################################################
 # Storage Account
 ################################################################################
-# resource "azurerm_storage_account" "etldevindiastg2" {
-#   name                     = "etldevindiastg2"
-#   resource_group_name      = "Pipelines-Dev-CIndia-RG"
-#   location                 = "centralindia"
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-# }
+resource "azurerm_storage_account" "etldevindiastg2" {
+   name                     = var.storage_account_name
+   resource_group_name      = var.resource_group
+   location                 = var.location
+   account_tier             = "Standard"
+   account_replication_type = "LRS"
+}
 
 ################################################################################
 # Azure SQL Server
@@ -54,7 +54,7 @@ resource "azurerm_mssql_firewall_rule" "allow_my_ip" {
 
 
 # Azure SQL Database
-/* resource "azurerm_mssql_database" "db" {
+resource "azurerm_mssql_database" "db" {
   name      = var.mssql_database
   server_id = azurerm_mssql_server.main.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
@@ -68,26 +68,5 @@ resource "azurerm_mssql_firewall_rule" "allow_my_ip" {
   # Backup storage redundancy > localy TODO
 
   
-}  */
+} 
 
-################################################################################
-# create tables in the database
-################################################################################
-
-/* resource "azurerm_mssql_table" "table" {
-  name      = "customer"
-  database_id = azurerm_mssql_database.db.id
-  columns = {
-    "CustomerID" = "int"
-    "NameStyle" = "bit"
-    "Title" = "varchar(18)"
-    "FirstName" = "nvarchar(10)"
-    "LastName" = "nvarchar(150)"
-    "EmailAddress" = "nvarchar(150)"
-    "Phone" = "varchar(25)"
-  }
-  primary_key = "CustomerID" 
-} */
-
-
-################################################################################

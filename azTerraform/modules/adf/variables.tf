@@ -28,19 +28,19 @@ variable "mssql_database" {
 variable "mssql_user" {
   type = string
   description = "MSSQL User"
-  default = "mssqladmin"
+  default = terraform.tfvars.mssql_user
 }
 
 variable "mssql_password" {
   type = string
   description = "MSSQL Password"
-  default = "H@Sh1CoR3!a2@z1/"
+  default = terraform.tfvars.mssql_password
 }
 
 variable "my_public_ip" {
   type = string
   description = "My Public IP"
-  default = "88.152.185.77"
+  default = terraform.tfvars.my_public_ip
 }
 
 ################################################################################
@@ -49,7 +49,7 @@ variable "my_public_ip" {
 variable "azure_blob_storage_connection_string" { 
   type = string
   description = "Azure Blob Storage Connection String"
-  default = "DefaultEndpointsProtocol=https;AccountName=etldevindiastg;AccountKey=B2cC5u6O7S2XdFfQkgZYQDW6KvPC4s/7hUE9wUFrz9+6x6+hSaS1uAd7jog/9RqYQnmCwMaut24m+AStijwc6Q==;EndpointSuffix=core.windows.net"
+  default = terraform.tfvars.azure_blob_storage_connection_string
 }
 
 variable "uploaded_path" {

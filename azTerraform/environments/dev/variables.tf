@@ -8,6 +8,14 @@ variable "location" {
   description = "Location"
   default = "centralindia"
 }
+################################################################################
+# storage
+################################################################################
+variable "storage_account_name" {
+  type = string
+  description = "Storage Account Name"
+  default = "etldevindiastg2"
+}
 
 ################################################################################
 # mssql
@@ -27,19 +35,26 @@ variable "mssql_database" {
 variable "mssql_user" {
   type = string
   description = "MSSQL User"
-  default = "mssqladmin"
+  default = terraform.tfvars.mssql_user
 }
 
 variable "mssql_password" {
   type = string
   description = "MSSQL Password"
-  default = "H@Sh1CoR3!a2@z1/"
+  default = terraform.tfvars.mssql_password
+}
+
+variable "mssql_password2" {
+  type = string
+  description = "MSSQL Password"
+  sensitive = true
+  default = "test_pass"
 }
 
 variable "my_public_ip" {
   type = string
   description = "My Public IP"
-  default = "88.152.185.77"
+  default = terraform.tfvars.my_public_ip
 }
 
 
