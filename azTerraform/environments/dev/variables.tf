@@ -44,12 +44,7 @@ variable "mssql_password" {
   default = terraform.tfvars.mssql_password
 }
 
-variable "mssql_password2" {
-  type = string
-  description = "MSSQL Password"
-  sensitive = true
-  default = "test_pass"
-}
+
 
 variable "my_public_ip" {
   type = string
